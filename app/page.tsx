@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { AdminPanel } from "@/components/AdminPanel";
 import { AppointmentModal, type ModalState } from "@/components/AppointmentModal";
 import { DayAgenda } from "@/components/DayAgenda";
 import { Header, type ViewMode } from "@/components/Header";
 import { useIdentity } from "@/components/IdentityProvider";
 import { MonthAgenda } from "@/components/MonthAgenda";
 import { NameGate } from "@/components/NameGate";
+import { supabase } from "@/lib/supabase";
 import { WeekAgenda } from "@/components/WeekAgenda";
 import {
   formatDayLabel,
@@ -27,6 +29,22 @@ export default function Home() {
   const [selectedDate, setSelectedDate] = useState(() => new Date());
   const [modal, setModal] = useState<ModalState | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [adminOpen, setAdminOpen] = useState(false);
+
+  useEffect(() => {
+    if (!identity) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setIsAdmin(false);
+      return;
+    }
+    supabase
+      .from("team_members")
+      .select("is_admin")
+      .eq("id", identity.id)
+      .maybeSingle()
+      .then(({ data }) => setIsAdmin(Boolean(data?.is_admin)));
+  }, [identity]);
 
   if (!ready) {
     return <div className="min-h-screen bg-slate-50" />;
@@ -97,6 +115,8 @@ export default function Home() {
         onToday={() => setSelectedDate(new Date())}
         identity={identity}
         onSignOut={signOut}
+        isAdmin={isAdmin}
+        onOpenAdmin={() => setAdminOpen(true)}
       />
 
       {viewMode === "day" && (
@@ -138,6 +158,8 @@ export default function Home() {
           onSaved={() => setRefreshKey((k) => k + 1)}
         />
       )}
+
+      {adminOpen && <AdminPanel onClose={() => setAdminOpen(false)} />}
     </div>
   );
 }

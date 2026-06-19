@@ -7,8 +7,14 @@ create table if not exists team_members (
   id uuid primary key default gen_random_uuid(),
   name text not null unique,
   color text not null default '#0F2540',
+  is_admin boolean not null default false,
+  active boolean not null default true,
   created_at timestamptz not null default now()
 );
+
+-- Para bases de datos creadas antes de agregar is_admin/active:
+alter table team_members add column if not exists is_admin boolean not null default false;
+alter table team_members add column if not exists active boolean not null default true;
 
 create table if not exists appointments (
   id uuid primary key default gen_random_uuid(),
@@ -40,6 +46,12 @@ create policy "team_members_select_all" on team_members
 
 create policy "team_members_insert_all" on team_members
   for insert with check (true);
+
+create policy "team_members_update_all" on team_members
+  for update using (true);
+
+create policy "team_members_delete_all" on team_members
+  for delete using (true);
 
 create policy "appointments_select_all" on appointments
   for select using (true);

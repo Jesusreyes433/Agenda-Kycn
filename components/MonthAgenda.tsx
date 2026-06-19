@@ -29,6 +29,7 @@ export function MonthAgenda({ selectedDate, onSelectDay, refreshKey }: Props) {
     const { data } = await supabase
       .from("team_members")
       .select("*")
+      .eq("active", true)
       .order("created_at", { ascending: true });
     if (data) setMembers(data);
   }, []);

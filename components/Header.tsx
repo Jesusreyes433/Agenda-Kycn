@@ -14,6 +14,8 @@ type Props = {
   onToday: () => void;
   identity: Identity;
   onSignOut: () => void;
+  isAdmin: boolean;
+  onOpenAdmin: () => void;
 };
 
 const VIEW_OPTIONS: { mode: ViewMode; label: string }[] = [
@@ -32,6 +34,8 @@ export function Header({
   onToday,
   identity,
   onSignOut,
+  isAdmin,
+  onOpenAdmin,
 }: Props) {
   return (
     <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur">
@@ -43,14 +47,24 @@ export function Header({
           <span className="text-sm font-semibold text-slate-900">Agenda Kycn</span>
         </div>
 
-        <button
-          onClick={onSignOut}
-          className="flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5 text-sm text-slate-700 transition-colors hover:bg-slate-200"
-          title="Cambiar de usuario"
-        >
-          <span className="font-medium">{identity.name}</span>
-          <span className="text-xs text-slate-400">cambiar</span>
-        </button>
+        <div className="flex items-center gap-2">
+          {isAdmin && (
+            <button
+              onClick={onOpenAdmin}
+              className="rounded-full bg-slate-100 px-3 py-1.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-200"
+            >
+              Equipo
+            </button>
+          )}
+          <button
+            onClick={onSignOut}
+            className="flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5 text-sm text-slate-700 transition-colors hover:bg-slate-200"
+            title="Cambiar de usuario"
+          >
+            <span className="font-medium">{identity.name}</span>
+            <span className="text-xs text-slate-400">cambiar</span>
+          </button>
+        </div>
       </div>
 
       <div className="flex items-center justify-between gap-2 border-t border-slate-100 px-4 py-2.5">

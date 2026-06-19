@@ -2,6 +2,8 @@ export type TeamMember = {
   id: string;
   name: string;
   color: string;
+  is_admin: boolean;
+  active: boolean;
   created_at: string;
 };
 
