@@ -17,6 +17,8 @@ app normal, sin pasar por App Store ni Google Play.
   modificar.
 - Las notas de un compromiso son privadas: solo las ve quien lo creó.
 - Los cambios se reflejan en vivo para todo el equipo (Supabase Realtime).
+- Toda la app está protegida por una sola contraseña de equipo (no por
+  persona): sin esa contraseña no se puede ni ver la pantalla de nombres.
 
 ## Stack
 
@@ -55,7 +57,12 @@ cp .env.example .env.local
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://TU-PROYECTO.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-anon-key-publica
+AGENDA_ACCESS_PASSWORD=elige-una-contrasena
 ```
+
+`AGENDA_ACCESS_PASSWORD` es la contraseña única que el equipo va a usar para
+entrar a la app (pantalla `/login`). Si la dejas vacía o no la configuras,
+la app no pide contraseña (útil mientras desarrollas en tu computadora).
 
 ## 3. Correr en local
 
@@ -71,9 +78,14 @@ Abre [http://localhost:3000](http://localhost:3000).
 1. Sube este proyecto a un repositorio de GitHub (o GitLab/Bitbucket).
 2. En [vercel.com](https://vercel.com/), elige **Add New > Project** e
    importa el repositorio.
-3. En **Environment Variables**, agrega `NEXT_PUBLIC_SUPABASE_URL` y
-   `NEXT_PUBLIC_SUPABASE_ANON_KEY` con los mismos valores de tu `.env.local`.
+3. En **Environment Variables**, agrega `NEXT_PUBLIC_SUPABASE_URL`,
+   `NEXT_PUBLIC_SUPABASE_ANON_KEY` y `AGENDA_ACCESS_PASSWORD` con los mismos
+   valores de tu `.env.local`.
 4. Despliega. Vercel te da una URL pública (ej. `agenda-kycn.vercel.app`).
+5. En **Settings > Deployment Protection**, asegúrate de que **Vercel
+   Authentication** esté apagado: la contraseña de equipo de la app
+   (`AGENDA_ACCESS_PASSWORD`) ya cumple esa función, sin pedirle a nadie que
+   tenga cuenta de Vercel.
 
 ## 5. Instalar la app en el teléfono
 
