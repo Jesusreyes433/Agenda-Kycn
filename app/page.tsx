@@ -3,13 +3,27 @@
 import { useState } from "react";
 import { AppointmentModal, type ModalState } from "@/components/AppointmentModal";
 import { DayAgenda } from "@/components/DayAgenda";
-import { Header } from "@/components/Header";
+import { Header, type ViewMode } from "@/components/Header";
 import { useIdentity } from "@/components/IdentityProvider";
+import { MonthAgenda } from "@/components/MonthAgenda";
 import { NameGate } from "@/components/NameGate";
+import { WeekAgenda } from "@/components/WeekAgenda";
+import {
+  formatDayLabel,
+  formatMonthLabel,
+  formatWeekRangeLabel,
+  goToDay,
+  goToMonth,
+  goToWeek,
+  isSameMonthAs,
+  isSameWeekAs,
+  isToday,
+} from "@/lib/time";
 import type { Appointment, TeamMember } from "@/lib/types";
 
 export default function Home() {
   const { identity, ready, signOut } = useIdentity();
+  const [viewMode, setViewMode] = useState<ViewMode>("day");
   const [selectedDate, setSelectedDate] = useState(() => new Date());
   const [modal, setModal] = useState<ModalState | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -39,24 +53,82 @@ export default function Home() {
     }
   }
 
+  function handleSelectDay(date: Date) {
+    setSelectedDate(date);
+    setViewMode("day");
+  }
+
+  function handlePrev() {
+    if (viewMode === "day") setSelectedDate((d) => goToDay(d, -1));
+    else if (viewMode === "week") setSelectedDate((d) => goToWeek(d, -1));
+    else setSelectedDate((d) => goToMonth(d, -1));
+  }
+
+  function handleNext() {
+    if (viewMode === "day") setSelectedDate((d) => goToDay(d, 1));
+    else if (viewMode === "week") setSelectedDate((d) => goToWeek(d, 1));
+    else setSelectedDate((d) => goToMonth(d, 1));
+  }
+
+  const label =
+    viewMode === "day"
+      ? formatDayLabel(selectedDate)
+      : viewMode === "week"
+        ? formatWeekRangeLabel(selectedDate)
+        : formatMonthLabel(selectedDate);
+
+  const today = new Date();
+  const showTodayShortcut =
+    viewMode === "day"
+      ? !isToday(selectedDate)
+      : viewMode === "week"
+        ? !isSameWeekAs(today, selectedDate)
+        : !isSameMonthAs(today, selectedDate);
+
   return (
     <div className="flex min-h-screen flex-col bg-white">
-      <Header selectedDate={selectedDate} onChangeDate={setSelectedDate} identity={identity} onSignOut={signOut} />
-
-      <DayAgenda
-        selectedDate={selectedDate}
-        currentMemberId={identity.id}
-        onSelectAppointment={handleSelectAppointment}
-        refreshKey={refreshKey}
+      <Header
+        viewMode={viewMode}
+        onChangeViewMode={setViewMode}
+        label={label}
+        showTodayShortcut={showTodayShortcut}
+        onPrev={handlePrev}
+        onNext={handleNext}
+        onToday={() => setSelectedDate(new Date())}
+        identity={identity}
+        onSignOut={signOut}
       />
 
-      <button
-        onClick={() => setModal({ mode: "create", defaultDate: selectedDate })}
-        className="fixed bottom-6 right-5 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-[#0F2540] text-2xl font-light text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
-        aria-label="Nuevo compromiso"
-      >
-        +
-      </button>
+      {viewMode === "day" && (
+        <DayAgenda
+          selectedDate={selectedDate}
+          currentMemberId={identity.id}
+          onSelectAppointment={handleSelectAppointment}
+          refreshKey={refreshKey}
+        />
+      )}
+      {viewMode === "week" && (
+        <WeekAgenda
+          selectedDate={selectedDate}
+          currentMemberId={identity.id}
+          onSelectAppointment={handleSelectAppointment}
+          onSelectDay={handleSelectDay}
+          refreshKey={refreshKey}
+        />
+      )}
+      {viewMode === "month" && (
+        <MonthAgenda selectedDate={selectedDate} onSelectDay={handleSelectDay} refreshKey={refreshKey} />
+      )}
+
+      {viewMode === "day" && (
+        <button
+          onClick={() => setModal({ mode: "create", defaultDate: selectedDate })}
+          className="fixed bottom-6 right-5 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-[#0F2540] text-2xl font-light text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
+          aria-label="Nuevo compromiso"
+        >
+          +
+        </button>
+      )}
 
       {modal && (
         <AppointmentModal

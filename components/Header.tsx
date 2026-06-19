@@ -1,18 +1,38 @@
 "use client";
 
-import { formatDayLabel, goToDay, isToday } from "@/lib/time";
 import type { Identity } from "@/lib/types";
 
+export type ViewMode = "day" | "week" | "month";
+
 type Props = {
-  selectedDate: Date;
-  onChangeDate: (date: Date) => void;
+  viewMode: ViewMode;
+  onChangeViewMode: (mode: ViewMode) => void;
+  label: string;
+  showTodayShortcut: boolean;
+  onPrev: () => void;
+  onNext: () => void;
+  onToday: () => void;
   identity: Identity;
   onSignOut: () => void;
 };
 
-export function Header({ selectedDate, onChangeDate, identity, onSignOut }: Props) {
-  const label = formatDayLabel(selectedDate);
+const VIEW_OPTIONS: { mode: ViewMode; label: string }[] = [
+  { mode: "day", label: "Día" },
+  { mode: "week", label: "Semana" },
+  { mode: "month", label: "Mes" },
+];
 
+export function Header({
+  viewMode,
+  onChangeViewMode,
+  label,
+  showTodayShortcut,
+  onPrev,
+  onNext,
+  onToday,
+  identity,
+  onSignOut,
+}: Props) {
   return (
     <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur">
       <div className="flex items-center justify-between gap-3 px-4 py-3">
@@ -35,8 +55,8 @@ export function Header({ selectedDate, onChangeDate, identity, onSignOut }: Prop
 
       <div className="flex items-center justify-between gap-2 border-t border-slate-100 px-4 py-2.5">
         <button
-          onClick={() => onChangeDate(goToDay(selectedDate, -1))}
-          aria-label="Día anterior"
+          onClick={onPrev}
+          aria-label="Anterior"
           className="flex h-8 w-8 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100"
         >
           ‹
@@ -44,23 +64,36 @@ export function Header({ selectedDate, onChangeDate, identity, onSignOut }: Prop
 
         <div className="flex flex-1 flex-col items-center">
           <span className="text-sm font-medium text-slate-900">{label}</span>
-          {!isToday(selectedDate) && (
-            <button
-              onClick={() => onChangeDate(new Date())}
-              className="text-xs font-medium text-[#0F2540] hover:underline"
-            >
+          {showTodayShortcut && (
+            <button onClick={onToday} className="text-xs font-medium text-[#0F2540] hover:underline">
               Ir a hoy
             </button>
           )}
         </div>
 
         <button
-          onClick={() => onChangeDate(goToDay(selectedDate, 1))}
-          aria-label="Día siguiente"
+          onClick={onNext}
+          aria-label="Siguiente"
           className="flex h-8 w-8 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100"
         >
           ›
         </button>
+      </div>
+
+      <div className="flex justify-center gap-1 border-t border-slate-100 px-4 py-2">
+        {VIEW_OPTIONS.map((option) => (
+          <button
+            key={option.mode}
+            onClick={() => onChangeViewMode(option.mode)}
+            className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors ${
+              viewMode === option.mode
+                ? "bg-[#0F2540] text-white"
+                : "text-slate-600 hover:bg-slate-100"
+            }`}
+          >
+            {option.label}
+          </button>
+        ))}
       </div>
     </header>
   );
