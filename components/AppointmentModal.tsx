@@ -136,6 +136,29 @@ function EditableAppointment({
 
     setSaving(true);
     try {
+      let overlapQuery = supabase
+        .from("appointments")
+        .select("id, title, start_at, end_at")
+        .eq("member_id", currentMemberId)
+        .lt("start_at", end.toISOString())
+        .gt("end_at", start.toISOString());
+      if (existing) {
+        overlapQuery = overlapQuery.neq("id", existing.id);
+      }
+      const { data: overlapping, error: overlapError } = await overlapQuery;
+      if (overlapError) throw overlapError;
+      if (overlapping && overlapping.length > 0) {
+        const conflict = overlapping[0];
+        setError(
+          `Ya tienes "${conflict.title}" en ese horario (${formatRange(
+            new Date(conflict.start_at),
+            new Date(conflict.end_at)
+          )}). Cambia la hora o edita ese compromiso.`
+        );
+        setSaving(false);
+        return;
+      }
+
       if (existing) {
         const { error: updateError } = await supabase
           .from("appointments")
