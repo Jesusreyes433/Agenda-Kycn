@@ -10,9 +10,8 @@ function Shell({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
       <div className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
         <div className="mb-6 text-center">
-          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-[#0F2540] text-lg font-semibold text-white">
-            AK
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo-kycn.svg" alt="Kycn" className="mx-auto mb-3 h-20 w-auto" />
           <h1 className="text-lg font-semibold text-slate-900">Agenda Kycn</h1>
           <p className="mt-1 text-sm text-slate-500">
             Agenda compartida del equipo de consultores

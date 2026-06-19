@@ -38,11 +38,9 @@ export function Header({
   return (
     <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur">
       <div className="flex items-center justify-between gap-3 px-4 py-3">
-        <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#0F2540] text-xs font-semibold text-white">
-            AK
-          </div>
-          <span className="text-sm font-semibold text-slate-900">Agenda Kycn</span>
+        <div className="h-8 overflow-hidden">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo-kycn.svg" alt="Kycn" className="block h-14 w-auto" />
         </div>
 
         <div className="flex items-center gap-2">

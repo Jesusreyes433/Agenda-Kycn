@@ -8,6 +8,7 @@ const PUBLIC_PATHS = new Set([
   "/manifest.json",
   "/apple-touch-icon.png",
   "/favicon.ico",
+  "/logo-kycn.svg",
 ]);
 
 export function proxy(request: NextRequest) {

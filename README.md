@@ -103,9 +103,20 @@ Abre [http://localhost:3000](http://localhost:3000).
 - **Android (Chrome):** abrir la URL → menú (⋮) → "Instalar app" o "Agregar a
   la pantalla de inicio".
 
-## Personalizar el ícono
+## Logo
 
-`scripts/gen-icon.cjs` genera íconos de marcador de posición (cuadrado azul
-marino) en `public/icons/` y `public/apple-touch-icon.png`. Cuando tengan un
-logo definitivo, basta con reemplazar esos archivos PNG (192×192, 512×512 y
-180×180) manteniendo los mismos nombres.
+El logo real vive en `public/logo-kycn.svg` y se usa en el header, en
+`/login` y en la pantalla de elegir nombre. Si cambia el logo:
+
+1. Reemplaza `public/logo-kycn.svg` con el archivo nuevo.
+2. Regenera los íconos cuadrados (PWA, apple-touch-icon) con:
+
+   ```bash
+   npm install -D playwright
+   node scripts/render-icons-from-logo.mjs
+   npm uninstall playwright
+   ```
+
+   Esto sobreescribe `public/icons/icon-192.png`, `icon-512.png`,
+   `icon-maskable-512.png` y `public/apple-touch-icon.png` centrando el logo
+   sobre un fondo blanco cuadrado.
