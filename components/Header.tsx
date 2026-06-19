@@ -13,7 +13,6 @@ type Props = {
   onNext: () => void;
   onToday: () => void;
   identity: Identity;
-  onSignOut: () => void;
   isAdmin: boolean;
   onOpenAdmin: () => void;
 };
@@ -33,7 +32,6 @@ export function Header({
   onNext,
   onToday,
   identity,
-  onSignOut,
   isAdmin,
   onOpenAdmin,
 }: Props) {
@@ -56,14 +54,9 @@ export function Header({
               Equipo
             </button>
           )}
-          <button
-            onClick={onSignOut}
-            className="flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5 text-sm text-slate-700 transition-colors hover:bg-slate-200"
-            title="Cambiar de usuario"
-          >
-            <span className="font-medium">{identity.name}</span>
-            <span className="text-xs text-slate-400">cambiar</span>
-          </button>
+          <span className="rounded-full bg-slate-100 px-3 py-1.5 text-sm font-medium text-slate-700">
+            {identity.name}
+          </span>
         </div>
       </div>
 

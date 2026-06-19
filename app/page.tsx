@@ -24,7 +24,7 @@ import {
 import type { Appointment, TeamMember } from "@/lib/types";
 
 export default function Home() {
-  const { identity, ready, signOut } = useIdentity();
+  const { identity } = useIdentity();
   const [viewMode, setViewMode] = useState<ViewMode>("day");
   const [selectedDate, setSelectedDate] = useState(() => new Date());
   const [modal, setModal] = useState<ModalState | null>(null);
@@ -45,10 +45,6 @@ export default function Home() {
       .maybeSingle()
       .then(({ data }) => setIsAdmin(Boolean(data?.is_admin)));
   }, [identity]);
-
-  if (!ready) {
-    return <div className="min-h-screen bg-slate-50" />;
-  }
 
   if (!identity) {
     return <NameGate />;
@@ -114,7 +110,6 @@ export default function Home() {
         onNext={handleNext}
         onToday={() => setSelectedDate(new Date())}
         identity={identity}
-        onSignOut={signOut}
         isAdmin={isAdmin}
         onOpenAdmin={() => setAdminOpen(true)}
       />

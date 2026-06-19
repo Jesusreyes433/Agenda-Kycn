@@ -10,15 +10,20 @@ app normal, sin pasar por App Store ni Google Play.
 
 ## Cómo funciona
 
-- Al entrar por primera vez, cada persona escribe su nombre. Ese nombre la
-  identifica en todas las visitas siguientes (queda guardado en su teléfono).
+- Solo el administrador puede agregar integrantes (panel "Equipo", protegido
+  con su propia contraseña). No existe el autoregistro: si no estás en la
+  lista, no puedes entrar.
+- Cada vez que se abre o recarga la app hay que elegir tu nombre de la lista
+  de nuevo (no se recuerda quién eras la vez anterior). Así, si alguien por
+  error elige a otra persona, basta con recargar para corregirlo.
 - Cada quien solo puede crear, editar y borrar **sus propios** compromisos.
   Los compromisos de los demás se ven (título y horario), pero no se pueden
   modificar.
 - Las notas de un compromiso son privadas: solo las ve quien lo creó.
 - Los cambios se reflejan en vivo para todo el equipo (Supabase Realtime).
-- Toda la app está protegida por una sola contraseña de equipo (no por
-  persona): sin esa contraseña no se puede ni ver la pantalla de nombres.
+- Toda la app está protegida por una contraseña de equipo (sin esa
+  contraseña no se puede ni ver la pantalla de nombres), y el panel "Equipo"
+  pide una segunda contraseña, solo para el administrador.
 
 ## Stack
 
@@ -58,11 +63,15 @@ cp .env.example .env.local
 NEXT_PUBLIC_SUPABASE_URL=https://TU-PROYECTO.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-anon-key-publica
 AGENDA_ACCESS_PASSWORD=elige-una-contrasena
+AGENDA_ADMIN_PASSWORD=elige-otra-contrasena-distinta
 ```
 
-`AGENDA_ACCESS_PASSWORD` es la contraseña única que el equipo va a usar para
-entrar a la app (pantalla `/login`). Si la dejas vacía o no la configuras,
-la app no pide contraseña (útil mientras desarrollas en tu computadora).
+- `AGENDA_ACCESS_PASSWORD` es la contraseña única que el equipo va a usar
+  para entrar a la app (pantalla `/login`). Si la dejas vacía, la app no pide
+  contraseña (útil mientras desarrollas en tu computadora).
+- `AGENDA_ADMIN_PASSWORD` se pide cada vez que alguien abre el panel
+  "Equipo" (agregar, renombrar o dar de baja integrantes). Debe ser distinta
+  a la anterior y solo debería conocerla el administrador.
 
 ## 3. Correr en local
 
@@ -79,8 +88,8 @@ Abre [http://localhost:3000](http://localhost:3000).
 2. En [vercel.com](https://vercel.com/), elige **Add New > Project** e
    importa el repositorio.
 3. En **Environment Variables**, agrega `NEXT_PUBLIC_SUPABASE_URL`,
-   `NEXT_PUBLIC_SUPABASE_ANON_KEY` y `AGENDA_ACCESS_PASSWORD` con los mismos
-   valores de tu `.env.local`.
+   `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `AGENDA_ACCESS_PASSWORD` y
+   `AGENDA_ADMIN_PASSWORD` con los mismos valores de tu `.env.local`.
 4. Despliega. Vercel te da una URL pública (ej. `agenda-kycn.vercel.app`).
 5. En **Settings > Deployment Protection**, asegúrate de que **Vercel
    Authentication** esté apagado: la contraseña de equipo de la app
