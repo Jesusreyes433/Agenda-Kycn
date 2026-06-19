@@ -38,10 +38,8 @@ export function Header({
   return (
     <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur">
       <div className="flex items-center justify-between gap-3 px-4 py-3">
-        <div className="h-8 overflow-hidden">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-kycn.svg" alt="Kycn" className="block h-14 w-auto" />
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/logo-kycn-mark.svg" alt="Kycn" className="h-8 w-auto" />
 
         <div className="flex items-center gap-2">
           {isAdmin && (
