@@ -88,7 +88,7 @@ export function WeekAgenda({
     <div className="flex-1 overflow-auto">
       <div className="min-w-[560px]">
         <div className="grid grid-cols-[90px_repeat(7,1fr)] border-b border-slate-200">
-          <div />
+          <div className="sticky left-0 z-20 bg-white" />
           {days.map((day) => (
             <button
               key={day.toISOString()}
@@ -113,7 +113,7 @@ export function WeekAgenda({
 
         {members.map((member) => (
           <div key={member.id} className="grid grid-cols-[90px_repeat(7,1fr)] border-b border-slate-100">
-            <div className="flex min-w-0 items-center gap-1.5 px-2.5 py-2">
+            <div className="sticky left-0 z-10 flex min-w-0 items-center gap-1.5 border-r border-slate-100 bg-white px-2.5 py-2">
               <span
                 className="h-2 w-2 flex-shrink-0 rounded-full"
                 style={{ backgroundColor: member.color }}
