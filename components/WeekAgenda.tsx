@@ -87,7 +87,7 @@ export function WeekAgenda({
   return (
     <div className="flex-1 overflow-auto">
       <div className="min-w-[560px]">
-        <div className="grid grid-cols-[90px_repeat(7,1fr)] border-b border-slate-200">
+        <div className="sticky top-0 z-20 grid grid-cols-[90px_repeat(7,1fr)] border-b border-slate-200 bg-white">
           <div className="sticky left-0 z-20 bg-white" />
           {days.map((day) => (
             <button
