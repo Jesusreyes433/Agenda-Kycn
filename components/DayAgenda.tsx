@@ -15,6 +15,9 @@ import type { Appointment, TeamMember } from "@/lib/types";
 
 const GUTTER_WIDTH = 56;
 const COLUMN_WIDTH = 168;
+// Room above the first hour mark so its label (vertically centered on the
+// gridline via -translate-y-1/2) isn't clipped by the scroll container's top edge.
+const TOP_PADDING = 10;
 
 type Props = {
   selectedDate: Date;
@@ -99,12 +102,12 @@ export function DayAgenda({
           style={{ width: GUTTER_WIDTH }}
         >
           <div className="sticky top-0 z-10 h-11 bg-white" />
-          <div className="relative" style={{ height: totalHeight }}>
+          <div className="relative" style={{ height: totalHeight + TOP_PADDING }}>
             {marks.map((h) => (
               <div
                 key={h}
                 className="absolute right-2 -translate-y-1/2 text-[11px] text-slate-400"
-                style={{ top: (h - marks[0]) * PIXELS_PER_HOUR }}
+                style={{ top: (h - marks[0]) * PIXELS_PER_HOUR + TOP_PADDING }}
               >
                 {formatTimeLabel(h)}
               </div>
@@ -121,7 +124,7 @@ export function DayAgenda({
             {showNowLine && nowTop !== null && nowTop >= 0 && nowTop <= totalHeight && (
               <div
                 className="pointer-events-none absolute z-10 border-t-2 border-red-400"
-                style={{ top: 44 + nowTop, left: GUTTER_WIDTH, right: 0 }}
+                style={{ top: 44 + nowTop + TOP_PADDING, left: GUTTER_WIDTH, right: 0 }}
               >
                 <span className="absolute -left-1 -top-1.5 h-3 w-3 rounded-full bg-red-400" />
               </div>
@@ -147,12 +150,12 @@ export function DayAgenda({
                     </span>
                   </div>
 
-                  <div className="relative" style={{ height: totalHeight }}>
+                  <div className="relative" style={{ height: totalHeight + TOP_PADDING }}>
                     {marks.slice(1, -1).map((h) => (
                       <div
                         key={h}
                         className="absolute left-0 right-0 border-t border-slate-100"
-                        style={{ top: (h - marks[0]) * PIXELS_PER_HOUR }}
+                        style={{ top: (h - marks[0]) * PIXELS_PER_HOUR + TOP_PADDING }}
                       />
                     ))}
 
@@ -173,7 +176,7 @@ export function DayAgenda({
                           key={appt.id}
                           onClick={() => onSelectAppointment(appt, member, isOwner)}
                           className="absolute left-1 right-1 overflow-hidden rounded-md px-2 py-1 text-left text-[11px] leading-tight text-white shadow-sm transition-opacity hover:opacity-90"
-                          style={{ top, height, backgroundColor: member.color }}
+                          style={{ top: top + TOP_PADDING, height, backgroundColor: member.color }}
                         >
                           <div className="truncate font-medium">{appt.title}</div>
                           <div className="truncate text-white/80">
