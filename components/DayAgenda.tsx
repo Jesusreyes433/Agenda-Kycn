@@ -18,6 +18,8 @@ const COLUMN_WIDTH = 168;
 // Room above the first hour mark so its label (vertically centered on the
 // gridline via -translate-y-1/2) isn't clipped by the scroll container's top edge.
 const TOP_PADDING = 10;
+// Small visual gap between back-to-back appointments, matching the spacing already used in WeekAgenda.
+const APPOINTMENT_GAP = 3;
 
 type Props = {
   selectedDate: Date;
@@ -176,7 +178,11 @@ export function DayAgenda({
                           key={appt.id}
                           onClick={() => onSelectAppointment(appt, member, isOwner)}
                           className="absolute left-1 right-1 overflow-hidden rounded-md px-2 py-1 text-left text-[11px] leading-tight text-white shadow-sm transition-opacity hover:opacity-90"
-                          style={{ top: top + TOP_PADDING, height, backgroundColor: member.color }}
+                          style={{
+                            top: top + TOP_PADDING,
+                            height: Math.max(20, height - APPOINTMENT_GAP),
+                            backgroundColor: member.color,
+                          }}
                         >
                           <div className="truncate font-medium">{appt.title}</div>
                           <div className="truncate text-white/80">
