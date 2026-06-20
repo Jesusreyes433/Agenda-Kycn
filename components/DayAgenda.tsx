@@ -19,7 +19,7 @@ const COLUMN_WIDTH = 168;
 // gridline via -translate-y-1/2) isn't clipped by the scroll container's top edge.
 const TOP_PADDING = 10;
 // Small visual gap between back-to-back appointments, matching the spacing already used in WeekAgenda.
-const APPOINTMENT_GAP = 3;
+const APPOINTMENT_GAP = 1;
 
 type Props = {
   selectedDate: Date;
