@@ -6,6 +6,7 @@ import { AppointmentModal, type ModalState } from "@/components/AppointmentModal
 import { DayAgenda } from "@/components/DayAgenda";
 import { Header, type ViewMode } from "@/components/Header";
 import { useIdentity } from "@/components/IdentityProvider";
+import { InstallPrompt } from "@/components/InstallPrompt";
 import { MonthAgenda } from "@/components/MonthAgenda";
 import { NameGate } from "@/components/NameGate";
 import { supabase } from "@/lib/supabase";
@@ -155,6 +156,8 @@ export default function Home() {
       )}
 
       {adminOpen && <AdminPanel onClose={() => setAdminOpen(false)} />}
+
+      <InstallPrompt />
     </div>
   );
 }
