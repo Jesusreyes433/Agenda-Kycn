@@ -85,7 +85,7 @@ export function WeekAgenda({
   }
 
   return (
-    <div className="flex-1 overflow-x-auto">
+    <div className="flex-1 overflow-auto">
       <div className="min-w-[560px]">
         <div className="grid grid-cols-[90px_repeat(7,1fr)] border-b border-slate-200">
           <div />

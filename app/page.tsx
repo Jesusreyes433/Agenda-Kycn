@@ -100,7 +100,7 @@ export default function Home() {
         : !isSameMonthAs(today, selectedDate);
 
   return (
-    <div className="flex min-h-screen flex-col bg-white">
+    <div className="flex h-screen flex-col overflow-hidden bg-white">
       <Header
         viewMode={viewMode}
         onChangeViewMode={setViewMode}

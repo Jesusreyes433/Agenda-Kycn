@@ -80,7 +80,7 @@ export function MonthAgenda({ selectedDate, onSelectDay, refreshKey }: Props) {
   }
 
   return (
-    <div className="flex-1 px-2 py-2">
+    <div className="flex-1 overflow-y-auto px-2 py-2">
       <div className="grid grid-cols-7 text-center text-[11px] font-medium text-slate-400">
         {weekdayLabels.map((label) => (
           <div key={label} className="py-1.5">

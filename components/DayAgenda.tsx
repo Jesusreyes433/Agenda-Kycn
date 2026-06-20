@@ -89,33 +89,39 @@ export function DayAgenda({
   }
 
   return (
-    <div className="flex flex-1">
-      <div className="flex-shrink-0" style={{ width: GUTTER_WIDTH }}>
-        <div className="h-11" />
-        <div className="relative" style={{ height: totalHeight }}>
-          {marks.map((h) => (
-            <div
-              key={h}
-              className="absolute right-2 -translate-y-1/2 text-[11px] text-slate-400"
-              style={{ top: (h - marks[0]) * PIXELS_PER_HOUR }}
-            >
-              {formatTimeLabel(h)}
-            </div>
-          ))}
+    <div className="flex-1 overflow-auto">
+      <div
+        className="relative flex"
+        style={{ minWidth: GUTTER_WIDTH + members.length * COLUMN_WIDTH }}
+      >
+        <div
+          className="sticky left-0 z-20 flex-shrink-0 bg-white"
+          style={{ width: GUTTER_WIDTH }}
+        >
+          <div className="sticky top-0 z-10 h-11 bg-white" />
+          <div className="relative" style={{ height: totalHeight }}>
+            {marks.map((h) => (
+              <div
+                key={h}
+                className="absolute right-2 -translate-y-1/2 text-[11px] text-slate-400"
+                style={{ top: (h - marks[0]) * PIXELS_PER_HOUR }}
+              >
+                {formatTimeLabel(h)}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
 
-      <div className="flex-1 overflow-x-auto">
         {members.length === 0 ? (
           <div className="px-4 py-10 text-center text-sm text-slate-400">
             Todavía no hay nadie en el equipo.
           </div>
         ) : (
-          <div className="relative flex" style={{ minWidth: members.length * COLUMN_WIDTH }}>
+          <>
             {showNowLine && nowTop !== null && nowTop >= 0 && nowTop <= totalHeight && (
               <div
-                className="pointer-events-none absolute left-0 right-0 z-10 border-t-2 border-red-400"
-                style={{ top: 44 + nowTop }}
+                className="pointer-events-none absolute z-10 border-t-2 border-red-400"
+                style={{ top: 44 + nowTop, left: GUTTER_WIDTH, right: 0 }}
               >
                 <span className="absolute -left-1 -top-1.5 h-3 w-3 rounded-full bg-red-400" />
               </div>
@@ -130,7 +136,7 @@ export function DayAgenda({
                   className="flex-shrink-0 border-l border-slate-100 first:border-l-0"
                   style={{ width: COLUMN_WIDTH }}
                 >
-                  <div className="flex h-11 items-center gap-1.5 truncate border-b border-slate-100 px-2.5">
+                  <div className="sticky top-0 z-10 flex h-11 items-center gap-1.5 truncate border-b border-slate-100 bg-white px-2.5">
                     <span
                       className="h-2 w-2 flex-shrink-0 rounded-full"
                       style={{ backgroundColor: member.color }}
@@ -183,7 +189,7 @@ export function DayAgenda({
                 </div>
               );
             })}
-          </div>
+          </>
         )}
       </div>
     </div>
